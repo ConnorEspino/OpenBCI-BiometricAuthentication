@@ -12,7 +12,7 @@ def main():
     parser = argparse.ArgumentParser()
     # use docs to check which parameters are required for specific board, e.g. for Cyton - set serial port
     parser.add_argument('--timeout', type=int, help='timeout for device discovery or connection', required=False, default=0)
-    parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='')
+    parser.add_argument('--serial-port', type=str, help='The serial port that the Ganglion dongle is plugged into (Default: COM3)', required=False, default='')
     parser.add_argument('--session-name', type=str, help='The name of the directory to output the file to', required=False, default='')
     parser.add_argument('--output-file', type=str, help='The file to output the data to (Will create if it doesn\'t exist)', required=False, default='')
     parser.add_argument('--run-time', type=int, help='The amount of time to run the brain scan for', required=False, default=15)
