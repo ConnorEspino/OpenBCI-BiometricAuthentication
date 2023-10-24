@@ -1,6 +1,9 @@
 # Usage:
 # python hht-preprocess file1.txt
 
+# https://brainflow.readthedocs.io/en/stable/DataFormatDesc.html
+
+
 import os
 import pyhht
 import argparse
