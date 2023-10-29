@@ -70,7 +70,18 @@ def main():
 
     eeg_data = DataFilter.read_file(filePath) # Returns 2D numpy array
     newArr = [eeg_data[1], eeg_data[13]]
-    print(newArr)
+
+    prevNum = 0
+    for i, num in enumerate(newArr[1]):
+        if (prevNum == num and i < len(newArr[1]) - 1):
+            newArr[1][i] = (newArr[1][i] + newArr[1][i+1])/2
+        elif (i == len(newArr[1]) - 1):
+            newArr[1][i] = newArr[1][i] + (newArr[1][i-1] - newArr[1][i-2]) # This assumes we have more than 2 elements in the list
+        prevNum = num
+
+    printData(newArr)
+        
+
     # plt.plot(eeg_data)
     # imf_output_path = f'{outputPath}_IMF_{1}.png'
     # plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
@@ -82,7 +93,9 @@ def main():
     # decomposer = pyhht.EMD(eeg_data) # Perform Empirical Mode Decomposition
     # imfs = decomposer.decompose() # Generate IMFs
     # savePlot(imfs, outputPath)
-
+def printData(array):
+    for i, elem in enumerate(array[0]):
+        print(str(elem) + ' ' + str(array[1][i]))
 # def savePlot(imfs, outputPath):
 #     for i, imf in enumerate(imfs):
 #         plt.figure(figsize=(8, 4))
