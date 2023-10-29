@@ -1,5 +1,5 @@
 # Usage:
-# python hht-preprocess file1.txt
+# python hht-preprocess file1.txt [--num-splits NUM_SPLITS]
 
 # https://brainflow.readthedocs.io/en/stable/DataFormatDesc.html
 
@@ -52,10 +52,12 @@ def main():
         # Weird numpy hack
         array0_np = np.array(array[0])
         array1_np = np.array(array[1])
-        
+
         decomposer = pyhht.EMD(array0_np, array1_np) # Perform Empirical Mode Decomposition
         imfs = decomposer.decompose() # Generate IMFs
         savePlot(imfs, outputPath, i)
+        saveDataToFile(imfs, outputPath, i)
+        # print("IMFS Length: " + str(len(imfs)))
 
 def splitData(numSplits, array):
     dataLength = array[1][len(array[1]) - 1] - array[1][0]
@@ -86,16 +88,21 @@ def printData(array):
             print(str(elem) + ' ' + str(subArray[1][i]))
 
 def savePlot(imfs, outputPath, splitNum):
-    for i, imf in enumerate(imfs):
-        plt.figure(figsize=(8, 4))
-        plt.plot(imf)
-        plt.title(f'IMF {i + 1}')
-        plt.xlabel('Time')
-        plt.tight_layout()
+    fig, axes = plt.subplots(len(imfs), 1, figsize=(8, 4 * len(imfs)))
+    
+    for i, (imf, ax) in enumerate(zip(imfs, axes)):
+        ax.plot(imf)
+        ax.set_title(f'IMF {i + 1}')
+        ax.set_xlabel('Time')
 
-        imf_output_path = f'{outputPath}_Split-{splitNum}.png'
-        plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
-        plt.close()
+    plt.tight_layout()
+    
+    imf_output_path = f'{outputPath}_Split-{splitNum}.png'
+    plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
+    plt.close()
+
+def saveDataToFile(imfs, outputPath, splitNum):
+    DataFilter.write_file(imfs, f'{outputPath}_Split-{splitNum}', 'w')
 
 if __name__ == "__main__":
     main()
