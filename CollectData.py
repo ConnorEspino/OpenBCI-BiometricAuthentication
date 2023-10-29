@@ -29,7 +29,7 @@ def main():
     if (os.path.isfile(path)):
         print('File ' + path + ' already exists\n')
         answer = input('Would you like to override this file? (Y/N): ')
-        if (lower(answer) == 'n'):
+        if (answer.lower() == 'n'):
             outputFile = ''
 
     board = BoardShim(BoardIds.GANGLION_BOARD, params)

@@ -7,106 +7,95 @@
 import os
 import pyhht
 import argparse
+import numpy as np
+import matplotlib.pyplot as plt
 from brainflow.data_filter import DataFilter
-
-# import pyqtgraph as pg
-# from pyqtgraph.Qt import QtGui, QtCore
-# from PyQt6.QtWidgets import QApplication
-
-
-# class Graph:
-#     def __init__(self, data_file):
-#         self.data_file = data_file
-#         self.app = QApplication([])
-#         self.win = pg.GraphicsLayoutWidget(title='EEG Data Plot', size=(800, 600))
-#         self.eeg_data = DataFilter.read_file(self.data_file)
-#         #self.eeg_channel = BrainFlow.get_eeg_channels(BrainFlow.GANGLION_BOARD)
-
-#         self._init_timeseries()
-
-#         timer = pg.QtCore.QTimer()
-#         timer.timeout.connect(self.update)
-#         timer.start(50)
-
-#         self.app.exec()
-
-#     def _init_timeseries(self):
-#         self.plots = list()
-#         self.curves = list()
-
-#         p = self.win.addPlot(row=0, col=0)  # Use row=0 for the first channel
-#         p.showAxis('left', False)
-#         p.setMenuEnabled('left', False)
-#         p.showAxis('bottom', False)
-#         p.setMenuEnabled('bottom', False)
-#         p.setTitle('TimeSeries Plot')
-#         self.plots.append(p)
-#         curve = p.plot()
-#         self.curves.append(curve)
-
-#     def update(self):
-#         self.curves[0].setData(self.eeg_data[:, self.eeg_channel])
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', type=str, help='The path to the Brainflow file of EEG data to be pre-processed')
+    parser.add_argument('--num-splits', type=int, help='The number of segments to split the EEG data into before performing EMD', required=False, default=0)
     filePath = parser.parse_args().path
-    filename, file_extension = os.path.splitext(filePath)
-    outputPath = filename + '_Pre-Processed' + file_extension
-    if (os.path.isfile(outputPath)):
-        print('File ' + outputPath + ' already exists\n')
-        answer = input('Would you like to override this file? (Y/N): ')
-        if (lower(answer) == 'n'):
-            return
-        
-    # print(BoardShim.get_board_descr(BoardIds.GANGLION_BOARD))
-    #Output: {'accel_channels': [5, 6, 7], 'ecg_channels': [1, 2, 3, 4], 'eeg_channels': [1, 2, 3, 4], 'emg_channels': [1, 2, 3, 4], 'eog_channels': [1, 2, 3, 4], 'marker_channel': 14, 'name': 'Ganglion', 'num_rows': 15, 'package_num_channel': 0, 'resistance_channels': [8, 9, 10, 11, 12], 'sampling_rate': 200, 'timestamp_channel': 13}
+    numSplits = parser.parse_args().num_splits
 
-    # graph = Graph(filePath)
-    # timer = QtCore.QTimer()
-    # timer.timeout.connect(graph.update)
-    # timer.start(50)
-    # QtGui.QApplication.instance().exec_()
+    filename, file_extension = os.path.splitext(filePath)
+    outputPath = filename + '_Pre-Processed'
 
     eeg_data = DataFilter.read_file(filePath) # Returns 2D numpy array
-    newArr = [eeg_data[1], eeg_data[13]]
+    
+    # print(BoardShim.get_board_descr(BoardIds.GANGLION_BOARD))
+    # Output: {'accel_channels': [5, 6, 7], 'ecg_channels': [1, 2, 3, 4], 'eeg_channels': [1, 2, 3, 4], 'emg_channels': [1, 2, 3, 4], 'eog_channels': [1, 2, 3, 4], 'marker_channel': 14, 'name': 'Ganglion', 'num_rows': 15, 'package_num_channel': 0, 'resistance_channels': [8, 9, 10, 11, 12], 'sampling_rate': 200, 'timestamp_channel': 13}
+    eeg_data = [eeg_data[1], eeg_data[13]]
 
-    prevNum = 0
-    for i, num in enumerate(newArr[1]):
-        if (prevNum == num and i < len(newArr[1]) - 1):
-            newArr[1][i] = (newArr[1][i] + newArr[1][i+1])/2
-        elif (i == len(newArr[1]) - 1):
-            newArr[1][i] = newArr[1][i] + (newArr[1][i-1] - newArr[1][i-2]) # This assumes we have more than 2 elements in the list
-        prevNum = num
+    # Fix duplicate timestamps
+    prevTimestamp = 0
+    for i, timestamp in enumerate(eeg_data[1]):
+        if (prevTimestamp == timestamp and i < len(eeg_data[1]) - 1):
+            eeg_data[1][i] = (eeg_data[1][i] + eeg_data[1][i+1])/2
+        elif (i == len(eeg_data[1]) - 1):
+            eeg_data[1][i] = eeg_data[1][i] + (eeg_data[1][i-1] - eeg_data[1][i-2]) # This assumes we have more than 2 elements in the list
+        prevTimestamp = timestamp
 
-    printData(newArr)
+    # Split file
+    splitArray = []
+    if (numSplits > 0):
+        splitArray = splitData(numSplits, eeg_data)
+    else:
+        splitArray.append(eeg_data)
         
+    # Useful for Debugging
+    # printData(splitArray)
 
-    # plt.plot(eeg_data)
-    # imf_output_path = f'{outputPath}_IMF_{1}.png'
-    # plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
-    # plt.plot(eeg_data[:, 0])
-    # imf_output_path = f'{outputPath}_IMF_{2}.png'
-    # plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
+    # HHT Decomposition
+    # https://pyhht.readthedocs.io/en/latest/apiref/pyhht.html#pyhht.emd.EmpiricalModeDecomposition.__init__
+    for i, array in enumerate(splitArray):
+        # Weird numpy hack
+        array0_np = np.array(array[0])
+        array1_np = np.array(array[1])
+        
+        decomposer = pyhht.EMD(array0_np, array1_np) # Perform Empirical Mode Decomposition
+        imfs = decomposer.decompose() # Generate IMFs
+        savePlot(imfs, outputPath, i)
 
-    # eeg_data = eeg_data[:, 0]  # Extract the first channel's information (1D array)
-    # decomposer = pyhht.EMD(eeg_data) # Perform Empirical Mode Decomposition
-    # imfs = decomposer.decompose() # Generate IMFs
-    # savePlot(imfs, outputPath)
+def splitData(numSplits, array):
+    dataLength = array[1][len(array[1]) - 1] - array[1][0]
+    # print("Data Length: " + str(dataLength))
+    splitInterval = dataLength / numSplits
+    # print("Split Interval: " + str(splitInterval))
+
+    splitArray = []
+    currentIndex = 0
+    for i in range(numSplits):
+        newArr = [[], []]
+        currentSplitEnd = array[1][0] + ((i + 1) * splitInterval)
+        # print("Split End for split " + str(i) + ": " + str(currentSplitEnd))
+
+        while (array[1][currentIndex] < currentSplitEnd):
+            newArr[0].append(array[0][currentIndex])
+            newArr[1].append(array[1][currentIndex])
+            currentIndex += 1
+
+        splitArray.append(newArr)
+    
+    return splitArray
+
 def printData(array):
-    for i, elem in enumerate(array[0]):
-        print(str(elem) + ' ' + str(array[1][i]))
-# def savePlot(imfs, outputPath):
-#     for i, imf in enumerate(imfs):
-#         plt.figure(figsize=(8, 4))
-#         plt.plot(imf)
-#         plt.title(f'IMF {i + 1}')
-#         plt.xlabel('Time')
-#         plt.tight_layout()
+    for i, subArray in enumerate(array):
+        print("\nData for Subarray: " + str(i))
+        for i, elem in enumerate(subArray[0]):
+            print(str(elem) + ' ' + str(subArray[1][i]))
 
-#         imf_output_path = f'{outputPath}.png'
-#         plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
-#         plt.close()
+def savePlot(imfs, outputPath, splitNum):
+    for i, imf in enumerate(imfs):
+        plt.figure(figsize=(8, 4))
+        plt.plot(imf)
+        plt.title(f'IMF {i + 1}')
+        plt.xlabel('Time')
+        plt.tight_layout()
+
+        imf_output_path = f'{outputPath}_Split-{splitNum}.png'
+        plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
+        plt.close()
 
 if __name__ == "__main__":
     main()
