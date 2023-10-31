@@ -18,7 +18,7 @@ You'll need to install the dependencies using the python package manager</br>
 This script is specific to the OpenBCI Ganglion board. Once the dongle is connected to your machine and the Ganglion board is on, you can run the script to collect data.</br></br>
 
 usage:</br>
-```python Test.py [-h] [--timeout TIMEOUT] [--serial-port SERIAL_PORT] [--session-name SESSION_NAME] [--output-file OUTPUT_FILE] [--run-time RUN_TIME]```</br></br>
+```python CollectData.py [-h] [--timeout TIMEOUT] [--serial-port SERIAL_PORT] [--session-name SESSION_NAME] [--output-file OUTPUT_FILE] [--run-time RUN_TIME]```</br></br>
 
 options:</br>
   -h, --help            show this help message and exit</br>
