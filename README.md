@@ -35,7 +35,7 @@ options:</br>
 Once data is collected, you can Preprocess using a Hilbert-Huang Transform. To do this, run the hht-preprocess.py script.</br>
 
 usage:</br>
-```python hht-preprocess filePath [--num-splits NUM_SPLITS]```</br></br>
+```python hht-preprocess.py filePath [--num-splits NUM_SPLITS]```</br></br>
 
 options:</br>
   filePath         The path to the Brainflow file of EEG data to be pre-processed</br>
