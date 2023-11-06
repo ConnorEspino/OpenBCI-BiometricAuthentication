@@ -48,7 +48,9 @@ def main():
     model = SVC(kernel='linear')
     model.fit(trainingData, classificationArray)
 
-    joblib.dump(model, outputPath)
+    funData = [model, classDict]
+
+    joblib.dump(funData, outputPath)
 
 if __name__ == "__main__":
     main()
