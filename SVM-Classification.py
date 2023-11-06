@@ -25,7 +25,7 @@ def main():
 
     finalGuesses = []
 
-    for i, elem in enumerate(arr):
+    for elem in arr:
         finalGuesses.append(reverse_dict[elem])
 
     print(finalGuesses)
