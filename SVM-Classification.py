@@ -15,13 +15,21 @@ def main():
     testFilePath = Path(args.testFile)
 
     funData = joblib.load(modelPath)
-    model = funData[0]
-    classDict = funData[1]
+    smallestIMF = funData[0]
+    imfRange = funData[1]
+    model = funData[2]
+    classDict = funData[3]
     reverse_dict = {value: key for key, value in classDict.items()}
 
     imfs = DataFilter.read_file(str(testFilePath))
 
-    arr = model.predict(imfs)
+    # Only include IMFs that were included in the model
+    filteredImfs = []
+    for i, imf in enumerate(imfs):
+        if (i in imfRange):
+            filteredImfs.append(imf[:smallestIMF])
+
+    arr = model.predict(filteredImfs)
 
     finalGuesses = []
 

@@ -9,10 +9,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('trainingDataPath', type=str, help='The path to the directory containing the data which the SVM model will be trained on')
     parser.add_argument('--outputName', type=str, help='The name of the file to which the SVM model will be saved', required=False, default='SVM-Model')
+    parser.add_argument('--imfRange', type=str, help='The range of IMFs to use for creating the model, Ex: \'2-5\' for inclusive range or \'2\' for a single IMF or don\'t include argument for all IMFs', required=False, default='-1')
     args = parser.parse_args()
 
     trainingDataPath = Path(args.trainingDataPath)
     outputPath = Path(args.trainingDataPath + '/' + args.outputName + '.pkl')
+    imfRange = validateRange(args.imfRange)
 
     if (not trainingDataPath.is_dir()):
         print("Path does not exist: " + str(trainingDataPath))
@@ -32,11 +34,12 @@ def main():
             classDict[dir.name] = len(classDict)
             for file in dir.iterdir():
                 imfs = DataFilter.read_file(str(file))
-                for imf in imfs:
-                    if (len(imf) < smallestIMF):
-                        smallestIMF = len(imf)
-                    trainingData.append(np.array(imf))
-                    classificationArray.append(classDict[dir.name])
+                for i, imf in enumerate(imfs):
+                    if (-1 in imfRange or i in imfRange):
+                        if (len(imf) < smallestIMF):
+                            smallestIMF = len(imf)
+                        trainingData.append(np.array(imf))
+                        classificationArray.append(classDict[dir.name])
 
     # Get data in proper format for SVC
     classificationArray = np.array(classificationArray)
@@ -48,9 +51,19 @@ def main():
     model = SVC(kernel='linear')
     model.fit(trainingData, classificationArray)
 
-    funData = [model, classDict]
+    funData = [smallestIMF, imfRange, model, classDict]
 
     joblib.dump(funData, outputPath)
+
+def validateRange(rangeArg):
+    if rangeArg == '-1':
+        return [-1]
+
+    if '-' in rangeArg:
+        start, end = map(int, rangeArg.split('-'))
+        return list(range(start, end + 1))  # Adding 1 to include the end value
+    else:
+        return [int(rangeArg)]
 
 if __name__ == "__main__":
     main()
