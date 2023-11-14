@@ -41,7 +41,7 @@ options:</br>
   filePath         The path to the Brainflow file of EEG data to be pre-processed</br>
   --num-splits     The number of segments to split the EEG data into before performing EMD</br></br>
 
-  Once the data is pre-processed, you can now create a model from it. To do this, create a directory that contains subdirectories containing only pre-processed files. For an example, look in [./Test 1 Data](./Test%201%20Data). You can then run the SVM-CreateModel.py script using this directory as the trainingDataPath option. </br>
+  Once the data is pre-processed, you can now create a model from it. To do this, create a directory that contains subdirectories containing only pre-processed files. For an example, look in [./Test 1 Data/Initial Readings](./Test%201%20Data/Initial%20Readings). You can then run the SVM-CreateModel.py script using this directory as the trainingDataPath option. </br>
 
   usage:</br>
   ```python SVM-CreateModel.py [-h] [--outputName OUTPUTNAME] [--imfRange IMFRANGE] trainingDataPath```</br></br>
