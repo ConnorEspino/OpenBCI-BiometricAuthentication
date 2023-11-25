@@ -66,6 +66,3 @@ def writeFile(sessionName, outputFile, data):
 
 if __name__ == "__main__":
     main()
-
-#Dependencies:
-# brainflow

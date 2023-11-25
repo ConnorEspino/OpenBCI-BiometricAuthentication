@@ -2,6 +2,7 @@
 # python hht-preprocess file1.txt [--num-splits NUM_SPLITS]
 
 # https://brainflow.readthedocs.io/en/stable/DataFormatDesc.html
+# https://docs.openbci.com/Ganglion/GanglionDataFormat/
 
 
 import os

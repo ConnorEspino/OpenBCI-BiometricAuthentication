@@ -1,0 +1,28 @@
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/0_Pre-Processed_Split-0'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/0_Pre-Processed_Split-1'
+['Hector_', 'Justin_', 'Justin_', 'Brady_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/0_Pre-Processed_Split-2'
+['Brady_', 'Brady_', 'Hector_', 'Justin_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/1_Pre-Processed_Split-0'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/1_Pre-Processed_Split-1'
+['Brady_', 'Brady_', 'Brady_', 'Justin_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/1_Pre-Processed_Split-2'
+['Brady_', 'Justin_', 'Justin_', 'Brady_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/2_Pre-Processed_Split-0'
+['Hector_', 'Brady_', 'Justin_', 'Justin_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/2_Pre-Processed_Split-1'
+['Justin_', 'Brady_', 'Justin_', 'Justin_']
+
+$ python SVM-Classification.py './Test 3 Data/Initial Readings/SVM-Model.pkl' './Test 3 Data/Secondary Readings/Brady2_/2_Pre-Processed_Split-2'
+['Justin_', 'Brady_', 'Brady_', 'Justin_']
+
+55.56% Accuracy

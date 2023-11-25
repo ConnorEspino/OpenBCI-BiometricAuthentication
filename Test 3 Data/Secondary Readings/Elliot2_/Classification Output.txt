@@ -1,0 +1,25 @@
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/0_Pre-Processed_Split-1'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/0_Pre-Processed_Split-2'
+['Brady_', 'Brady_', 'Justin', 'Justin']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/1_Pre-Processed_Split-0'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/1_Pre-Processed_Split-1'
+['Brady_', 'Brady_', 'Amelia', 'Brady_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/1_Pre-Processed_Split-2'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/2_Pre-Processed_Split-0'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/2_Pre-Processed_Split-1'
+['Brady_', 'Brady_', 'Brady_', 'Brady_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Elliot2_/2_Pre-Processed_Split-2'
+['Amelia', 'Brady_', 'Amelia', 'Brady_']
+
+0% Accuracy

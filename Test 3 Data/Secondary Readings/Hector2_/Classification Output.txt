@@ -1,0 +1,19 @@
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Hector2/0_Pre-Processed_Split-0'
+['Amelia', 'Amelia', 'Hector_', 'Amelia']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Hector2/0_Pre-Processed_Split-1'
+['Justin', 'Emerson', 'Hector_', 'Hector_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Hector2/1_Pre-Processed_Split-0'
+['Amelia', 'Emerson', 'Amelia', 'Amelia']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Hector2/2_Pre-Processed_Split-0'
+['Justin', 'Justin', 'Amelia', 'Hector_']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Hector2/2_Pre-Processed_Split-1'
+['Justin', 'Justin', 'Justin', 'Amelia']
+
+$ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Hector2/2_Pre-Processed_Split-2'
+['Amelia', 'Amelia', 'Amelia', 'Amelia']
+
+8.33% Accuracy

@@ -26,7 +26,7 @@ def main():
     # Only include IMFs that were included in the model
     filteredImfs = []
     for i, imf in enumerate(imfs):
-        if (i in imfRange):
+        if (-1 in imfRange or i in imfRange):
             filteredImfs.append(imf[:smallestIMF])
 
     arr = model.predict(filteredImfs)

@@ -1,0 +1,31 @@
+Throw out:
+Split 1 of reading 0 for Connor2_
+Split 1 of reading 2 for Connor2_
+
+Split 0 of reading 0 for Elliot2_
+
+Split 1 of reading 2 for Emerson2_
+Split 2 of reading 2 for Emerson2_
+
+Split 2 of reading 0 for Hector_
+
+Split 1 of reading 2 for Justin_
+
+Split 0 of reading 0 for Connor3
+Split 1 of reading 0 for Connor3
+Split 2 of reading 2 for Connor3
+
+Split 0 of reading 0 for Emerson3
+Split 1 of reading 0 for Emerson3
+Split 2 of reading 0 for Emerson3
+
+Split 0 of reading 1 for Emerson3
+Split 1 of reading 0 for Emerson3
+
+Split 1 of reading 2 for Emerson3
+Split 2 of reading 2 for Emerson3
+
+Split 2 of reading 0 for Hector2_
+
+Split 1 of reading 1 for Hector2_
+Split 2 of reading 1 for Hector2_

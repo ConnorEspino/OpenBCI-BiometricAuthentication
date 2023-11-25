@@ -24,5 +24,3 @@ $ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/S
 
 $ python SVM-Classification.py './Data/Initial Readings/SVM-Model.pkl' './Data/Secondary Readings/Amelia2_/2_Pre-Processed_Split-2'
 ['Hector_', 'Justin', 'Amelia', 'Justin']
-
-25% Accuracy
