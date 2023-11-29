@@ -17,7 +17,7 @@ def main():
     args = parser.parse_args()
 
     cValue = args.cValue
-    mKernel = 'rbf'
+    mKernel = 'linear'
     trainingDataPath = Path(args.trainingDataPath)
     outputPath = Path(args.trainingDataPath + '/' + args.outputName + '-C' + str(cValue) + '.pkl')
     imfRange = validateRange(args.imfRange)
