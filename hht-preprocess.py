@@ -10,6 +10,7 @@ import pyhht
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.signal import hilbert
 from brainflow.data_filter import DataFilter
 
 def main():
@@ -47,7 +48,6 @@ def main():
     # Useful for Debugging
     # printData(splitArray)
 
-    # HHT Decomposition
     # https://pyhht.readthedocs.io/en/latest/apiref/pyhht.html#pyhht.emd.EmpiricalModeDecomposition.__init__
     for i, array in enumerate(splitArray):
         # Weird numpy hack
@@ -57,6 +57,10 @@ def main():
         decomposer = pyhht.EMD(array0_np, array1_np) # Perform Empirical Mode Decomposition
         imfs = decomposer.decompose() # Generate IMFs
         savePlot(imfs, outputPath, i)
+
+        for i, imf in enumerate(imfs): # Apply Hilbert Transform
+            imfs[i] = hilbert(imf)
+
         saveDataToFile(imfs, outputPath, i)
         # print("IMFS Length: " + str(len(imfs)))
 
