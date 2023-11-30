@@ -9,7 +9,7 @@ import os
 import pyhht
 import argparse
 import numpy as np
-from scipy import angle, unwrap
+from pathlib import Path
 import matplotlib.pyplot as plt
 from scipy.signal import hilbert
 
@@ -22,13 +22,13 @@ def main():
     parser.add_argument('--no-photos', '-p', type=bool, help='Add this argument if you don\'t want to save photos of EMD graphs', required=False, default=False)
     args = parser.parse_args()
 
-    filePath = args.path
+    filePath = Path(args.path)
     numSplits = args.num_splits
     noPhotos = args.no_photos
 
     for file in filePath.iterdir():
         filename, file_extension = os.path.splitext(file)
-        outputPath = filePath + '/' + filename + '_Pre-Processed'
+        outputPath = filename + '_Pre-Processed'
         eeg_data = DataFilter.read_file(str(file)) # Returns 2D numpy array
         
         # print(BoardShim.get_board_descr(BoardIds.GANGLION_BOARD))
@@ -65,9 +65,9 @@ def main():
             if (not noPhotos):
                 savePlot(imfList, outputPath, i)
 
-            instantaneousFrequencies = np.array(imfList)
+            instantaneousFrequencies = np.array([])
             for j, imf in enumerate(imfList): # Apply Hilbert Transform
-                instantaneousFrequencies[j] = np.diff(unwrap(angle(hilbert(imf)))) # https://pyhht.readthedocs.io/en/latest/tutorials/hilbert_view_nonlinearity.html#intrinsic-mode-functions
+                np.append(instantaneousFrequencies, np.diff(np.unwrap(np.angle(hilbert(imf))))) # https://pyhht.readthedocs.io/en/latest/tutorials/hilbert_view_nonlinearity.html#intrinsic-mode-functions
 
             saveDataToFile(instantaneousFrequencies, outputPath, i)
             # print("instantaneousFrequencies Length: " + str(len(instantaneousFrequencies)))
