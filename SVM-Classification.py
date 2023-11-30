@@ -15,21 +15,24 @@ def main():
     testFilePath = Path(args.testFile)
 
     funData = joblib.load(modelPath)
-    smallestIMF = funData[0]
-    imfRange = funData[1]
-    model = funData[2]
-    classDict = funData[3]
+    imfRange = funData[0]
+    model = funData[1]
+    classDict = funData[2]
     reverse_dict = {value: key for key, value in classDict.items()}
 
-    imfs = DataFilter.read_file(str(testFilePath))
+    imfs = np.load(str(testFilePath))
 
     # Only include IMFs that were included in the model
-    filteredImfs = []
+    filteredFreqs = []
     for i, imf in enumerate(imfs):
         if (-1 in imfRange or i in imfRange):
-            filteredImfs.append(imf[:smallestIMF])
+            filteredFreqs.append(imf)
 
-    arr = model.predict(filteredImfs)
+    try:
+        arr = model.predict(filteredFreqs)
+    except Exception as e:
+        print("\n\nError:\n" + str(e))
+        return
 
     finalGuesses = []
 

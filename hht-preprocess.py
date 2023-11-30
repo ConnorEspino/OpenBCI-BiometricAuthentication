@@ -66,8 +66,13 @@ def main():
                 savePlot(imfList, outputPath, i)
 
             instantaneousFrequencies = np.array([])
-            for j, imf in enumerate(imfList): # Apply Hilbert Transform
-                np.append(instantaneousFrequencies, np.diff(np.unwrap(np.angle(hilbert(imf))))) # https://pyhht.readthedocs.io/en/latest/tutorials/hilbert_view_nonlinearity.html#intrinsic-mode-functions
+            for imf in imfList: # Apply Hilbert Transform
+                hilbertTransform = hilbert(imf)
+                instantPhase = np.angle(hilbertTransform)
+                phaseUnwrapped = np.unwrap(instantPhase)
+                instantFrequency = np.diff(phaseUnwrapped)
+                print(instantFrequency)
+                instantaneousFrequencies = np.append(instantaneousFrequencies, instantFrequency) # https://pyhht.readthedocs.io/en/latest/tutorials/hilbert_view_nonlinearity.html#intrinsic-mode-functions
 
             saveDataToFile(instantaneousFrequencies, outputPath, i)
             # print("instantaneousFrequencies Length: " + str(len(instantaneousFrequencies)))
@@ -118,6 +123,7 @@ def savePlot(imfs, outputPath, splitNum):
 
 
 def saveDataToFile(instantaneousFrequencies, outputPath, splitNum):
+    print('\n\n\n\nSaving to file:\n' + str(instantaneousFrequencies))
     np.save(f'{outputPath}_Split-{splitNum}.npy', instantaneousFrequencies)
 
 
