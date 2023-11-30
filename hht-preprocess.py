@@ -55,11 +55,12 @@ def main():
         array1_np = np.array(array[1])
 
         decomposer = pyhht.EMD(array0_np, array1_np) # Perform Empirical Mode Decomposition
-        imfs = decomposer.decompose() # Generate IMFs
-        savePlot(imfs, outputPath, i)
+        imfList = decomposer.decompose() # Generate IMFs
+        savePlot(imfList, outputPath, i)
 
-        for i, imf in enumerate(imfs): # Apply Hilbert Transform
-            imfs[i] = hilbert(imf)
+        imfs = np.array(imfList, dtype=np.complex128) # Can store complex numbers (Necessary for HHT)
+        for j, imf in enumerate(imfList): # Apply Hilbert Transform
+            imfs[j] = hilbert(imf)
 
         saveDataToFile(imfs, outputPath, i)
         # print("IMFS Length: " + str(len(imfs)))
@@ -107,7 +108,7 @@ def savePlot(imfs, outputPath, splitNum):
     plt.close()
 
 def saveDataToFile(imfs, outputPath, splitNum):
-    DataFilter.write_file(imfs, f'{outputPath}_Split-{splitNum}', 'w')
+    np.save(f'{outputPath}_Split-{splitNum}.npy', imfs)
 
 if __name__ == "__main__":
     main()
