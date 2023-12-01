@@ -15,9 +15,10 @@ def main():
     testFilePath = Path(args.testFile)
 
     funData = joblib.load(modelPath)
-    imfRange = funData[0]
-    model = funData[1]
-    classDict = funData[2]
+    smallestIMF = funData[0]
+    imfRange = funData[1]
+    model = funData[2]
+    classDict = funData[3]
     reverse_dict = {value: key for key, value in classDict.items()}
 
     imfs = np.load(str(testFilePath))
@@ -26,7 +27,7 @@ def main():
     filteredFreqs = []
     for i, imf in enumerate(imfs):
         if (-1 in imfRange or i in imfRange):
-            filteredFreqs.append(imf)
+            filteredFreqs.append(imf[:smallestIMF])
 
     try:
         arr = model.predict(filteredFreqs)

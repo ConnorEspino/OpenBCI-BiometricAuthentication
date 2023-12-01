@@ -65,14 +65,14 @@ def main():
             if (not noPhotos):
                 savePlot(imfList, outputPath, i)
 
-            instantaneousFrequencies = np.array([])
+            instantaneousFrequencies = []
             for imf in imfList: # Apply Hilbert Transform
                 hilbertTransform = hilbert(imf)
                 instantPhase = np.angle(hilbertTransform)
                 phaseUnwrapped = np.unwrap(instantPhase)
                 instantFrequency = np.diff(phaseUnwrapped)
-                print(instantFrequency)
-                instantaneousFrequencies = np.append(instantaneousFrequencies, instantFrequency) # https://pyhht.readthedocs.io/en/latest/tutorials/hilbert_view_nonlinearity.html#intrinsic-mode-functions
+                # print(instantFrequency)
+                instantaneousFrequencies.append(instantFrequency) # https://pyhht.readthedocs.io/en/latest/tutorials/hilbert_view_nonlinearity.html#intrinsic-mode-functions
 
             saveDataToFile(instantaneousFrequencies, outputPath, i)
             # print("instantaneousFrequencies Length: " + str(len(instantaneousFrequencies)))
@@ -100,11 +100,11 @@ def splitData(numSplits, array):
     return splitArray
 
 
-def printData(array):
-    for i, subArray in enumerate(array):
-        print("\nData for Subarray: " + str(i))
-        for i, elem in enumerate(subArray[0]):
-            print(str(elem) + ' ' + str(subArray[1][i]))
+# def printData(array):
+#     for i, subArray in enumerate(array):
+#         print("\nData for Subarray: " + str(i))
+#         for i, elem in enumerate(subArray[0]):
+#             print(str(elem) + ' ' + str(subArray[1][i]))
 
 
 def savePlot(imfs, outputPath, splitNum):
@@ -123,7 +123,8 @@ def savePlot(imfs, outputPath, splitNum):
 
 
 def saveDataToFile(instantaneousFrequencies, outputPath, splitNum):
-    print('\n\n\n\nSaving to file:\n' + str(instantaneousFrequencies))
+    # print('\n\n\n\nSaving to file:\n' + str(instantaneousFrequencies))
+    # print('Saving to file:\n NumInstantFreqs: ' + str(len(instantaneousFrequencies)) + '\nNum InstantFreqs[0]: ' + str(len(instantaneousFrequencies[0])))
     np.save(f'{outputPath}_Split-{splitNum}.npy', instantaneousFrequencies)
 
 

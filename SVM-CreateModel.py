@@ -33,27 +33,29 @@ def main():
     trainingData = []
     classificationArray = []
     classDict = dict()
+    smallestIMF = 999999
 
     for dir in trainingDataPath.iterdir():
         if (dir.is_dir()):
             classDict[dir.name] = len(classDict)
             for file in dir.iterdir():
-                instantFreqs = np.load(str(file))
-                freqsToInclude = []
+                instantFreqs = np.load(str(file)) #instantFreqs is a 2D array, each sub-array contains the instant frequencies of the IMF corresponding to the index
                 for i, freq in enumerate(instantFreqs):
                     if (-1 in imfRange or i in imfRange):
-                        freqsToInclude.append(freq)
-                trainingData.append(freqsToInclude)
-                classificationArray.append(classDict[dir.name])
+                        if (len(freq) < smallestIMF):
+                            smallestIMF = len(freq)
+                        trainingData.append(freq)
+                        classificationArray.append(classDict[dir.name])
 
     # Get data in proper format for SVC
     classificationArray = np.array(classificationArray)
-    # for i, el in enumerate(trainingData):
-    #     trainingData[i] = el[:smallestIMF]
+
+    for i, el in enumerate(trainingData):
+        trainingData[i] = el[:smallestIMF]
 
     # print(str(classificationArray))
 
-    model = SVC(C=cValue, kernel=mKernel, verbose=0)
+    model = SVC(C=cValue, kernel=mKernel, verbose=0, decision_function_shape='ovr')
     print('Building Model with C Value: ' + str(cValue) + ', Kernel: ' + str(mKernel))
     try:
         model.fit(trainingData, classificationArray)
@@ -61,8 +63,7 @@ def main():
         print("\n\nError:\n" + str(e))
         return
 
-
-    funData = [imfRange, model, classDict]
+    funData = [smallestIMF, imfRange, model, classDict]
 
     joblib.dump(funData, outputPath)
 
