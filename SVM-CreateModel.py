@@ -39,19 +39,27 @@ def main():
         if (dir.is_dir()):
             classDict[dir.name] = len(classDict)
             for file in dir.iterdir():
-                instantFreqs = np.load(str(file)) #instantFreqs is a 2D array, each sub-array contains the instant frequencies of the IMF corresponding to the index
-                for i, freq in enumerate(instantFreqs):
+                data = np.load(str(file))
+                for i, entry in enumerate(data):
                     if (-1 in imfRange or i in imfRange):
-                        if (len(freq) < smallestIMF):
-                            smallestIMF = len(freq)
-                        trainingData.append(freq)
+                        # if (len(entry) < smallestIMF):
+                        #     smallestIMF = len(entry)
+
+                        # Workaround for SVM not allowing complex numbers
+                        magnitude = np.abs(entry)
+                        phase = np.angle(entry)
+
+                        # Combine magnitude and phase into a feature matrix
+                        SpecEntrReal = np.ravel(np.column_stack((magnitude, np.cos(phase), np.sin(phase))))
+
+                        trainingData.append(SpecEntrReal)
                         classificationArray.append(classDict[dir.name])
 
     # Get data in proper format for SVC
     classificationArray = np.array(classificationArray)
 
-    for i, el in enumerate(trainingData):
-        trainingData[i] = el[:smallestIMF]
+    # for i, el in enumerate(trainingData):
+    #     trainingData[i] = el[:smallestIMF]
 
     # print(str(classificationArray))
 
