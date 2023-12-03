@@ -67,14 +67,18 @@ def main():
                 savePlot(imfList, outputPath, i)
 
             spectralEntropies = []
+            hilbertTransforms = []
             for imf in imfList: # Apply Hilbert Transform
                 hilbertTransform = hilbert(imf)
+                hilbertTransforms.append(hilbertTransform)
                 hhtIntegral = np.cumsum(hilbertTransform) # Integrate the HHT result
                 hHatF = hhtIntegral / np.sum(hhtIntegral)
                 spectralEntropy = computeSpectralEntropy(hHatF)
                 spectralEntropies.append(spectralEntropy)
 
             saveDataToFile(spectralEntropies, outputPath, i)
+            # if (i == 1):
+            #     saveHilbertPlot(hilbertTransforms, outputPath)
 
 def splitData(numSplits, array):
     dataLength = array[1][len(array[1]) - 1] - array[1][0]
@@ -113,6 +117,20 @@ def savePlot(imfs, outputPath, splitNum):
     plt.savefig(imf_output_path, dpi=300, bbox_inches='tight')
     plt.close()
 
+
+def saveHilbertPlot(hilbert_data, outputPath):
+    fig, axes = plt.subplots(len(hilbert_data), 1, figsize=(8, 4 * len(hilbert_data)))
+
+    for i, hilbert_result in enumerate(hilbert_data):
+        axes[i].plot(hilbert_result.imag, label='Imaginary', color='orange')
+        axes[i].set_title(f'Hilbert Transformed Data {i + 1} - Imaginary')
+        axes[i].set_xlabel('Time')
+        axes[i].legend()
+
+    plt.tight_layout()
+
+    plt.savefig(outputPath, dpi=300, bbox_inches='tight')
+    plt.close()
 
 def saveDataToFile(data, outputPath, splitNum):
     np.save(f'{outputPath}_Split-{splitNum}.npy', data)
