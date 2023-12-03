@@ -3,10 +3,8 @@ import argparse
 import numpy as np
 from pathlib import Path
 from sklearn.svm import SVC
-import matplotlib.pyplot as plt
-from sklearn import datasets, svm
-from brainflow.data_filter import DataFilter
-from sklearn.inspection import DecisionBoundaryDisplay
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV
 
 def main():
     parser = argparse.ArgumentParser()
@@ -33,7 +31,6 @@ def main():
     trainingData = []
     classificationArray = []
     classDict = dict()
-    smallestIMF = 999999
 
     for dir in trainingDataPath.iterdir():
         if (dir.is_dir()):
@@ -42,15 +39,8 @@ def main():
                 data = np.load(str(file))
                 for i, entry in enumerate(data):
                     if (-1 in imfRange or i in imfRange):
-                        # if (len(entry) < smallestIMF):
-                        #     smallestIMF = len(entry)
 
-                        # Workaround for SVM not allowing complex numbers
-                        magnitude = np.abs(entry)
-                        phase = np.angle(entry)
-
-                        # Combine magnitude and phase into a feature matrix
-                        SpecEntrReal = np.ravel(np.column_stack((magnitude, np.cos(phase), np.sin(phase))))
+                        SpecEntrReal = [np.real(entry), np.imag(entry)]
 
                         trainingData.append(SpecEntrReal)
                         classificationArray.append(classDict[dir.name])
@@ -58,20 +48,30 @@ def main():
     # Get data in proper format for SVC
     classificationArray = np.array(classificationArray)
 
-    # for i, el in enumerate(trainingData):
-    #     trainingData[i] = el[:smallestIMF]
+    scaler = StandardScaler()
+    trainingDataScaled = scaler.fit_transform(trainingData)
 
-    # print(str(classificationArray))
+    # Perform hyperparameter tuning
+    # param_grid = {'C': [0.1, 1, 10, 100]}
+    # gridSearch = GridSearchCV(SVC(kernel='linear'), param_grid, cv=5)
+    # gridSearch.fit(trainingDataScaled, classificationArray)
+    # bestParams = gridSearch.best_params_
+    # bestModel = gridSearch.best_estimator_
+
+    # print(f'Best Model: {str(bestModel)}')
+    # print(f'Best Params: {str(bestParams)}')
 
     model = SVC(C=cValue, kernel=mKernel, verbose=0, decision_function_shape='ovr')
     print('Building Model with C Value: ' + str(cValue) + ', Kernel: ' + str(mKernel))
     try:
-        model.fit(trainingData, classificationArray)
+        # print(f'Training Data: {str(trainingDataScaled)}')
+        # print(f'\n\nClassification Array: {str(classificationArray)}')
+        model.fit(trainingDataScaled, classificationArray)
     except Exception as e:
         print("\n\nError:\n" + str(e))
         return
 
-    funData = [smallestIMF, imfRange, model, classDict]
+    funData = [scaler, imfRange, model, classDict]
 
     joblib.dump(funData, outputPath)
 
