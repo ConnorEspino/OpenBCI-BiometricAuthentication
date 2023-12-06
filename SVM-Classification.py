@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('modelPath', type=str, help='The path to the .pkl file containing the model created from SVM-CreateModel.py')
-    parser.add_argument('testData', type=str, help='The path to the directory containing labeled directories of preprocessed EEG data to test for classification')
+    parser.add_argument('testData', type=str, help='The path to the directory containing labeled directories of pre-processed EEG data to test for classification')
     args = parser.parse_args()
 
     modelPath = Path(args.modelPath)

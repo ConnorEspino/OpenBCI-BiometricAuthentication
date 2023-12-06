@@ -10,20 +10,19 @@ def main():
     BoardShim.enable_dev_board_logger()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--timeout', type=int, help='timeout for device discovery or connection', required=False, default=0)
-    parser.add_argument('--serial-port', type=str, help='The serial port that the Ganglion dongle is plugged into (Default: COM3)', required=False, default="COM3")
-    parser.add_argument('--session-name', type=str, help='The name of the directory to output the file to', required=False, default='')
-    parser.add_argument('--output-file', type=str, help='The file to output the data to (Will create if it doesn\'t exist)', required=False, default='')
-    parser.add_argument('--run-time', type=int, help='The amount of time to run the brain scan for', required=False, default=15)
+    parser.add_argument('--timeout', type=int, help='Timeout for device discovery or connection', required=False, default=0)
+    parser.add_argument('--serialPort', type=str, help='The serial port that the Ganglion dongle is plugged into (Default: COM3)', required=False, default="COM3")
+    parser.add_argument('--sessionName', type=str, help='The name of the directory to output the file to', required=False, default='')
+    parser.add_argument('--outputFile', type=str, help='The file to output the data to (Will create if it doesn\'t exist)', required=False, default='')
+    parser.add_argument('--runTime', type=int, help='The amount of time to run the brain scan for', required=False, default=15)
     args = parser.parse_args()
 
     params = BrainFlowInputParams()
     # 30 Seconds until it stops looking for a board
-    params.timeout = 30
-    params.serial_port = args.serial_port
-
-    sessionName = args.session_name
-    outputFile = args.output_file
+    params.timeout = args.timeout
+    params.serial_port = args.serialPort
+    sessionName = args.sessionName
+    outputFile = args.outputFile
 
     path = Path('./' + sessionName + '/' + outputFile)
     if (os.path.isfile(path)):
@@ -36,12 +35,13 @@ def main():
     board.prepare_session()
     
     # https://docs.openbci.com/Ganglion/GanglionSDK/#turn-channels-off
+    # Remove these to turn on the corresponding channel
     board.config_board("2")
     board.config_board("3")
     board.config_board("4")
 
     board.start_stream()
-    time.sleep(args.run_time)
+    time.sleep(args.runTime)
     data = board.get_board_data()  # get all data and remove it from internal buffer
     board.stop_stream()
     

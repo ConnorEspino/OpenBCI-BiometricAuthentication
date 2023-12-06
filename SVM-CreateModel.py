@@ -8,9 +8,9 @@ from sklearn.model_selection import GridSearchCV
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('trainingDataPath', type=str, help='The path to the directory containing the data which the SVM model will be trained on')
+    parser.add_argument('trainingDataPath', type=str, help='A directory containing one or more labeled directories of one or more pre-processed EEG readings which the SVM model will be trained on')
     parser.add_argument('--outputName', type=str, help='The name of the file to which the SVM model will be saved', required=False, default='SVM-Model')
-    parser.add_argument('--imfRange', type=str, help='The range of IMFs to use for creating the model, Ex: \'2-5\' for inclusive range or \'2\' for a single IMF or don\'t include argument for all IMFs', required=False, default='-1')
+    parser.add_argument('--imfRange', type=str, help='The range of Intrinsic Mode Functions (IMFs) to use for creating the model. For example, use \'2-5\' for an inclusive range, \'2\' for a single IMF, or don\'t include the argument for all IMFs.', required=False, default='-1')
     parser.add_argument('--cValue', type=float, help='SVM regularization parameter', required=False, default=1.0)
     args = parser.parse_args()
 

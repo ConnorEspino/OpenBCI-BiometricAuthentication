@@ -20,7 +20,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', type=str, help='The path to the directory containing EEG data to be pre-processed')
     parser.add_argument('--num-splits', '-n', type=int, help='The number of segments to split the EEG data into before performing EMD', required=False, default=0)
-    parser.add_argument('--no-photos', '-p', type=bool, help='Add this argument if you don\'t want to save photos of EMD graphs', required=False, default=False)
+    parser.add_argument('--no-photos', '-p', type=bool, help='True to not save graphs of each split\'s EMD, False by default', required=False, default=False)
     args = parser.parse_args()
 
     filePath = Path(args.path)
