@@ -67,9 +67,9 @@ usage:
 options:
 
 - `trainingDataPath` (type: `str`, required): A directory containing one or more labeled directories of pre-processed EEG readings. The SVM model will be trained on this data. 
-- `--outputName` (type: `str`, default: `'SVM-Model'`): The name of the file to which the SVM model will be saved. 
-- `--imfRange` (type: `str`, default: `'-1'`): The range of Intrinsic Mode Functions (IMFs) to use for creating the model. Example: `'2-5'` for an inclusive range, `'2'` for a single IMF, or don't include the argument for all IMFs. 
-- `--cValue` (type: `float`, default: `1.0`): SVM regularization parameter.</br>
+- `--outputName` (type: `str`, required: `False`, default: `'SVM-Model'`): The name of the file to which the SVM model will be saved. 
+- `--imfRange` (type: `str`, required: `False`, default: `'-1'`): The range of Intrinsic Mode Functions (IMFs) to use for creating the model. Example: `'2-5'` for an inclusive range, `'2'` for a single IMF, or don't include the argument for all IMFs. 
+- `--cValue` (type: `float`, required: `False`, default: `1.0`): SVM regularization parameter.</br>
 
 
 
