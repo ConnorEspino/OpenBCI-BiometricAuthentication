@@ -29,7 +29,7 @@ Simply run the InstallDdependencies.bat file on a Windows machine.
 These scripts are specific to the OpenBCI Ganglion board and only utilizes one electrode. Turn the other channels on in the CollectData.py script. Once the dongle is connected to your machine and the Ganglion board is on, you can run the script to collect data.
 
 usage:
-`python CollectData.py [--timeout TIMEOUT] [--serial-port SERIAL_PORT] [--session-name SESSION_NAME] [--output-file OUTPUT_FILE] [--run-time RUN_TIME]`
+`python CollectData.py [--timeout TIMEOUT] [--serialPort SERIAL_PORT] [--sessionMame SESSION_NAME] [--outputFile OUTPUT_FILE] [--runTime RUN_TIME]`
 
 options:
 
@@ -51,8 +51,8 @@ usage:
 options:
 
 - `path` (type: `str`, required): The path to the directory containing EEG data to be pre-processed. 
-- `--num-splits` or `-n` (type: `int`, required: `False`, default: `0`): The number of segments to split the EEG data into before performing Empirical Mode Decomposition (EMD). 
-- `--no-photos` or `-p` (type: `bool`, required: `False`, default: `False`): Set to `True` to not save graphs of each split's EMD. Defaults to `False`.
+- `--num-splits` (type: `int`, required: `False`, default: `0`): The number of segments to split the EEG data into before performing Empirical Mode Decomposition (EMD). 
+- `--no-photos` (type: `bool`, required: `False`, default: `False`): Set to `True` to not save graphs of each split's EMD. Defaults to `False`.
 
 
 
