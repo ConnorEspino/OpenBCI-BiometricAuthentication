@@ -22,7 +22,7 @@ Dr. Liljana Babinkostova
 The project runs on python, you'll need it installed on your machine
 
 You'll need to install the dependencies using pip, the python package manager.
-Simply run the InstallDdependencies.bat file on a Windows machine.
+Simply run the InstallDependencies.bat file on a Windows machine.
 
 
 
