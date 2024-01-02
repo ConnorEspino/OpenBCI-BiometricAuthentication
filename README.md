@@ -26,7 +26,7 @@ Simply run the InstallDependencies.bat file on a Windows machine.
 
 
 
-These scripts are specific to the OpenBCI Ganglion board and only utilizes one electrode. Turn the other channels on in the CollectData.py script. Once the dongle is connected to your machine and the Ganglion board is on, you can run the script to collect data.
+These scripts are specific to the OpenBCI Ganglion board and only utilizes one electrode. You can turn the other channels on if needed in the CollectData.py script. Once the dongle is connected to your machine and the Ganglion board is on, you can run the script to collect data.
 
 usage:
 `python CollectData.py [--timeout TIMEOUT] [--serialPort SERIAL_PORT] [--sessionName SESSION_NAME] [--outputFile OUTPUT_FILE] [--runTime RUN_TIME]`
@@ -37,7 +37,7 @@ options:
 - `--serialPort` (type: `str`, required: `False`, default: `"COM3"`): The serial port that the Ganglion dongle is plugged into. 
 - `--sessionName` (type: `str`, required: `False`, default: `''`): The name of the directory to output the file to. 
 - `--outputFile` (type: `str`, required: `False`, default: `''`): The file to output the data to (Will create if it doesn't exist). 
-- `--runTime` (type: `int`, required: `False`, default: `15`): The amount of time to run the brain scan for.
+- `--runTime` (type: `int`, required: `False`, default: `15`): The amount of time, in seconds, to run the brain scan for.
 
 
 
